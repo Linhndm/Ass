@@ -1,0 +1,6 @@
+S1137AF00A0A0D0000000000000000000000000061
+is decoded to show how the checksum value is calculated as follows:
+
+Add: add each byte 13 + 7A+F0 + 0A+0A+0D+00+00+00+00+00+00+00+00+00+00+00+00+00 = 19E (hex) total.
+Mask: keep the least significant byte of the total = 9E (hex).
+Complement: compute ones' complement of least significant byte = 61 (hex).// tinsh phaafn bu cua 9E -> 61

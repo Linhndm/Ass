@@ -1,0 +1,175 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NAME 50
+#define MAX_TYPE 3
+
+typedef struct student
+{
+	int mark;
+	char name[64];
+	struct student *pNext;
+} student_t;
+
+student_t *pHead = NULL;
+student_t *pTail = NULL;
+
+void insertTopStudent(const char* name, int lenName, int mark)
+{
+	student_t *newStudent =(student_t*)malloc(sizeof(student_t));
+	newStudent -> pNext = NULL;
+	newStudent -> mark =  mark;
+
+	int i;
+
+	for (i = 0; i < lenName; i++)
+	{
+		newStudent -> name[i] = name[i];
+	}
+
+
+
+	if (pHead == NULL)
+	{
+		pHead = newStudent;
+		pTail = newStudent;
+	}
+	else
+	{
+		newStudent-> pNext = pHead;
+		pHead = newStudent;
+	}
+
+}
+
+void insertBotStudent(const char* name, int lenName, int mark)// cso the dung strlen
+{
+	student_t *newStudent = (student_t*)malloc(sizeof(student_t));
+
+	newStudent -> pNext = NULL;
+	newStudent -> mark = mark;
+	int i;
+	for (i = 0; i < lenName; i++)
+	{
+		newStudent -> name[i] = name[i];
+	}
+
+	if (pTail == NULL)
+	{
+		pHead = newStudent;
+		pTail = newStudent;
+	}
+	else
+	{
+		pTail -> pNext = newStudent;
+		pTail = newStudent;
+	}
+}
+
+student_t* findStudent(const char* name)
+{
+	student_t *pFind = pHead;
+	while (pFind != NULL)
+	{
+		if(strcmp(pFind-> name, name) == 0)
+		{
+			printf("Find Name: %s", pFind->name);
+			return pFind;
+		}
+		else
+		{
+			pFind = pFind -> pNext;
+		}
+	}
+	return NULL;
+}
+
+void removeStudent(const char* name)
+{
+	student_t* address=findStudent(name);
+
+	if (address == NULL)
+		return;
+
+	student_t* pPre = pHead;
+
+	if(address == pHead)
+	{
+		pHead = pHead -> pNext;
+		return;
+	}
+
+	{
+		pPre = pPre -> pNext;
+	}
+
+	pPre-> pNext = address -> pNext;
+}
+
+void printStudent()
+{
+	student_t* pPrint = pHead;
+	while (pPrint != NULL)
+	{
+		printf("\nName: %s", pPrint->name);
+		printf("\nMark: %d", pPrint->mark);
+		pPrint = pPrint->pNext;
+	}
+}
+
+void inputNewStudent()
+{
+	char name[MAX_NAME];
+	int mark;
+	char type[MAX_TYPE];
+	printf("\nNew student's name : ");
+	fflush(stdin);
+	gets(name);
+	printf("Mark: ");
+	scanf("%d",&mark);
+	printf("\nPosition to insert: ");
+	printf("\n 1.insert to top linked list: TOP");
+	printf("\n 2.insert to bottom linked list: BOT \n ");
+	printf("\n -- ");
+	fflush(stdin);
+	gets(type);
+	if(strcmp(type,"BOT"))
+	{
+		insertTopStudent(name,MAX_NAME,mark);
+	}
+	else if(strcmp(type,"top"))
+	{
+		insertBotStudent(name,MAX_NAME,mark);
+	}
+}
+
+int main()
+{		
+	do
+	{
+	inputNewStudent();
+	printStudent();
+	}
+	while(1);
+
+	insertBotStudent("Linhqdm", 8, 12);
+	insertBotStudent("Linhwdm", 8, 12);
+	insertBotStudent("Linhedm", 8, 12);
+	printf("\n\n\n");
+	printStudent();
+
+	removeStudent("Linhcdm");
+	printf("\n\n\n");
+	printStudent();
+
+	removeStudent("Linhedm");
+	printf("\n\n\n");
+	printStudent();
+
+	removeStudent("Linhqdm");
+	printf("\n\n\n");
+	printStudent();
+
+	return 0;
+}
